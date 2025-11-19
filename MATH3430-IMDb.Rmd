@@ -9,22 +9,33 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library(readxl)
+library(dplyr)
 ```
 
-## Including Plots
+This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs.
+```
+raw_basics <- read_excel("title.basics.xlsx", na = '\\N')
+raw_ratings <- read_excel("title.ratings.xlsx", na = '\\N')
+```
+```
+movie_only_basics <- raw_basics %>% 
+  filter(titleType == 'movie') %>% 
+  select(-endYear, -titleType, -isAdult, -originalTitle) %>% 
+  rename(releaseYear = startYear)
 
-You can also embed plots, for example:
+write_xlsx(movie_only_basics, path = "movie_only_basics.xlsx")
+```
+```
+movie_and_rating_tidy <- inner_join(raw_ratings, movie_only_basics, by = "tconst")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+write_xlsx(movie_and_rating_tidy, path = "movie_and_rating_tidy.xlsx")
+```
+```
+movie_ratings <- movie_and_rating_tidy %>% 
+  select(tconst:numVotes)
+
+write_xlsx(movie_ratings, path = "movie_ratings.xlsx")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
