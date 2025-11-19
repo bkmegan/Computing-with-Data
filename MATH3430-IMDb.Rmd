@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(readxl)
 library(dplyr)
+library(ggplot2)
 ```
 
 This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs. NO ONE HAS TO RUN THIS PART OF THE CODE. JUST LOAD THE LIBRARIES AND THE READ_EXCEL.
@@ -69,6 +70,23 @@ not_null_runtimes %>%
   summarize(n = n()) %>% 
   arrange(desc(n))
 ```
+
+```{r}
+movies_decade <- clean_movies %>% 
+  mutate(decade = floor(releaseYear / 10) * 10) %>% 
+  count(decade)
+
+ggplot(movies_decade, aes(x = decade, y = n)) +
+  geom_point() +
+  geom_line(linewidth = 0.75, color = "blue") +
+  labs(title = "Numbers of Movie Releases over Time",
+       x = "Decade",
+       y = "Number of Movie Releases")
+
+#We have investigated this weird graph. The results we have came up with is that the data set is slightly out of date and as far as we know this graph accurately represents the d0.5 it has been given
+
+```
+
 
 
 
