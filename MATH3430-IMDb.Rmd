@@ -79,9 +79,10 @@ movies_decade <- clean_movies %>%
 ggplot(movies_decade, aes(x = decade, y = n)) +
   geom_point() +
   geom_line(linewidth = 0.75, color = "blue") +
-  labs(title = "Numbers of Movie Releases over Time",
+  labs(title = "Number of Movie Releases over Time",
        x = "Decade",
-       y = "Number of Movie Releases")
+       y = "Number of Movie Releases") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 #We have investigated this weird graph. The results we have came up with is that the data set is slightly out of date and as far as we know this graph accurately represents the d0.5 it has been given
 
