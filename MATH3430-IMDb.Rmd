@@ -63,4 +63,12 @@ not_null_genres <- movies %>%
 not_null_genres
 ```
 
+```{r}
+not_null_runtimes %>% 
+  group_by(runtimeMinutes) %>% 
+  summarize(n = n()) %>% 
+  arrange(desc(n))
+```
+
+
 
