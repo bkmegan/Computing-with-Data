@@ -14,7 +14,7 @@ library(readxl)
 library(dplyr)
 ```
 
-This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs.
+This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs. NO ONE HAS TO RUN THIS PART OF THE CODE. JUST LOAD THE LIBRARIES AND THE READ_EXCEL.
 ```
 raw_basics <- read_excel("title.basics.xlsx", na = '\\N')
 raw_ratings <- read_excel("title.ratings.xlsx", na = '\\N')
@@ -37,5 +37,10 @@ movie_ratings <- movie_and_rating_tidy %>%
   select(tconst:numVotes)
 
 write_xlsx(movie_ratings, path = "movie_ratings.xlsx")
+```
+```{r}
+movies <- read_excel("Data-Files\\movie_only_basics.xlsx")
+ratings <- read_excel("Data-Files\\movie_ratings.xlsx")
+movies_and_ratings <- read_excel("Data-Files\\movie_and_rating_tidy.xlsx")
 ```
 
