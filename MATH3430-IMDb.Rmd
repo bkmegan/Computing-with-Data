@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(dplyr)
 library(ggplot2)
+library(tidyr)
 ```
 
 This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs. NO ONE HAS TO RUN THIS PART OF THE CODE. JUST LOAD THE LIBRARIES AND THE READ_EXCEL.
@@ -91,7 +92,7 @@ ggplot(movies_decade, aes(x = decade, y = n)) +
 
 ```{r}
 ggplot(not_null_runtimes, aes(x = runtimeMinutes)) +
-  geom_histogram(bins = 30, na.rm = TRUE,  fill = "darkgreen") +
+  geom_histogram(bins = 30, na.rm = TRUE,  fill = "darkgreen", color = "lightgreen") +
   xlim(0, 250) +
   labs(title = "Distribution of Movie Runtimes",
        x = "Movie Runtime Minutes",
@@ -99,4 +100,34 @@ ggplot(not_null_runtimes, aes(x = runtimeMinutes)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+```{r}
+#Expand Genres into multiple rows
+movies_genre <- not_null_genres %>% 
+  separate_rows(genres, sep = ",") %>% 
+  mutate(genres = trimws(genres))
+
+#Find top 10 genres overall
+top_genres <- movies_genre %>% 
+  count(genres, sort = TRUE) %>% 
+  slice_head(n = 10) %>% 
+  pull(genres)
+
+#Calculate decade + filter for top genres
+movies_genre_decade <- movies_genre %>% 
+  filter(genres %in% top_genres) %>% 
+  mutate(decade = floor(releaseYear / 10) * 10) %>%
+  filter(!is.na(decade)) %>% 
+  count(decade, genres) %>% 
+  group_by(decade) %>% 
+  mutate(prop = n / sum(n))
+
+#Plot
+ggplot(movies_genre_decade, aes(x = factor(decade), y = prop, fill = genres)) +
+  geom_bar(stat = "identity", position = "fill", na.rm = T) +
+  labs(
+    title = "Genre Proportions by Decade",
+    x = "Decade",
+    y = "Proportion"
+  )
+```
 
