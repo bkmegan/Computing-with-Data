@@ -131,3 +131,30 @@ ggplot(movies_genre_decade, aes(x = factor(decade), y = prop, fill = genres)) +
   )
 ```
 
+
+```{r}
+movies_and_ratings %>%
+  mutate(runtime_cap = pmin(runtimeMinutes, 300)) %>% 
+  ggplot(aes(x = releaseYear, 
+             y = averageRating, 
+             color = runtime_cap)) +
+  geom_jitter(alpha = 0.15, size = 0.7, width = 0.3, height = 0.2) +
+  scale_color_viridis_c(option = "plasma") +
+  labs(
+    title = "Rating vs Year Colored by Runtime (Capped at 300 Minutes)",
+    x = "Year",
+    y = "Rating",
+    color = "Runtime (min)"
+  )
+
+```
+```{r}
+summary(movies_and_ratings$runtimeMinutes)
+
+movies_and_ratings
+
+movies_and_ratings %>%  filter(runtimeMinutes > 1000) %>% arrange(desc(runtimeMinutes))
+```
+
+
+
