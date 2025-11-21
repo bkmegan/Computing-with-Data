@@ -149,11 +149,21 @@ movies_and_ratings %>%
 
 ```
 ```{r}
-summary(movies_and_ratings$runtimeMinutes)
+library(hexbin)
+movies_clean <- movies_and_ratings %>% 
+  filter(
+    !is.na(releaseYear),
+    !is.na(averageRating),
+    !is.na(runtimeMinutes),
+    runtimeMinutes > 0
+  )
 
-movies_and_ratings
+ggplot(movies_clean,
+       aes(x = releaseYear, y = averageRating, z = runtimeMinutes)) +
+  stat_summary_hex(bins = 30, fun = "mean") +
+  scale_fill_viridis_c(option = "plasma")
 
-movies_and_ratings %>%  filter(runtimeMinutes > 1000) %>% arrange(desc(runtimeMinutes))
+  
 ```
 
 
