@@ -1,6 +1,6 @@
 ---
 title: "MATH3430-IMDb"
-author: "MB"
+author: "Alpha Team"
 date: "2025-11-19"
 output: html_document
 ---
@@ -74,7 +74,7 @@ not_null_runtimes %>%
 ```
 
 ```{r}
-movies_decade <- clean_movies %>% 
+movies_decade <- movies %>% 
   mutate(decade = floor(releaseYear / 10) * 10) %>% 
   count(decade)
 
