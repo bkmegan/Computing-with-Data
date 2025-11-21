@@ -128,8 +128,11 @@ ggplot(movies_genre_decade, aes(x = factor(decade), y = prop, fill = genres)) +
   labs(
     title = "Genre Proportions by Decade",
     x = "Decade",
-    y = "Proportion"
-  )
+    y = "Proportion",
+    fill = "Top Genres"
+  ) +
+    theme(plot.title = element_text(hjust = 0.5))
+
 ```
 
 
@@ -146,11 +149,13 @@ movies_and_ratings %>%
     x = "Year",
     y = "Rating",
     color = "Runtime (min)"
-  )
+  ) +
+    theme(plot.title = element_text(hjust = 0.5))
+
 
 ```
 
-Alternative to the above graph, using geom_hex to show the density a bit better to help witht the over plotting issue.
+Alternative to the above graph, using geom_hex to show the density a bit better to help with the over plotting issue.
 ```{r}
 movies_and_ratings %>%
   mutate(runtime_cap = pmin(runtimeMinutes, 300)) %>% 
