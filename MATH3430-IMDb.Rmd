@@ -14,6 +14,7 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(hexbin)
 ```
 
 This is the code we used to load the oversized Excel files and clean the data that is used to create the graphs. NO ONE HAS TO RUN THIS PART OF THE CODE. JUST LOAD THE LIBRARIES AND THE READ_EXCEL.
@@ -148,6 +149,22 @@ movies_and_ratings %>%
   )
 
 ```
+Alternative to the above graph, using geom_hex to show the density a bit better to help witht the over plotting issue.
+```{r}
+movies_and_ratings %>%
+  mutate(runtime_cap = pmin(runtimeMinutes, 300)) %>% 
+  ggplot(aes(x = releaseYear, y = averageRating, z = runtime_cap)) +
+  stat_summary_hex(fun = mean, bins = 30) +
+  scale_fill_viridis_c(option = "plasma") +
+  labs(
+    title = "Rating vs Year — Hexbins Colored by Average Runtime",
+    x = "Year",
+    y = "Rating",
+    fill = "Avg Runtime"
+  )
+
+```
+
 ```{r}
 summary(movies_and_ratings$runtimeMinutes)
 
