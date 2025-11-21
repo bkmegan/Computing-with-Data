@@ -149,6 +149,7 @@ movies_and_ratings %>%
   )
 
 ```
+
 Alternative to the above graph, using geom_hex to show the density a bit better to help witht the over plotting issue.
 ```{r}
 movies_and_ratings %>%
@@ -165,23 +166,6 @@ movies_and_ratings %>%
 
 ```
 
-```{r}
-library(hexbin)
-movies_clean <- movies_and_ratings %>% 
-  filter(
-    !is.na(releaseYear),
-    !is.na(averageRating),
-    !is.na(runtimeMinutes),
-    runtimeMinutes > 0
-  )
-
-ggplot(movies_clean,
-       aes(x = releaseYear, y = averageRating, z = runtimeMinutes)) +
-  stat_summary_hex(bins = 30, fun = "mean") +
-  scale_fill_viridis_c(option = "plasma")
-
-  
-```
 
 
 
